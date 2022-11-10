@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fonyou.examen.web.app.models.entity.Estudiante;
 import com.fonyou.examen.web.app.models.entity.Examen;
 import com.fonyou.examen.web.app.models.entity.PresentacionExamen;
+import com.fonyou.examen.web.app.models.entity.RespuestasPresentacion;
 import com.fonyou.examen.web.app.models.services.IGestionExamenService;
 import com.fonyou.examen.web.app.util.RespuestaServicio;
 import com.fonyou.examen.web.app.util.dto.EstudianteExamenDto;
@@ -41,5 +42,20 @@ public class ExamenRestController {
 		RespuestaServicio respuesta = examenService.consultarFechaPresentacionExamen(estudianteExamenDto);
 		return respuesta;
 	}
+	
+	// Método para guardar respuestas
+	@PostMapping("/guardarRespuestasPresentacion")
+	public RespuestaServicio guardarRespuestasPresentacion(@RequestBody RespuestasPresentacion respuestasPresentacion) {
+		RespuestaServicio respuesta = examenService.guardarRespuestasPresentacion(respuestasPresentacion);
+		return respuesta;
+		
+	}
+	
+	// Método para crear asignación examen por estudiante
+		@GetMapping("/obtenerCalificacionEstudiante")
+		public RespuestaServicio obtenerCalificacionEstudiante(@RequestBody EstudianteExamenDto estudianteExamenDto) {
+			RespuestaServicio respuesta = examenService.obtenerCalificacionPorEstudiante(estudianteExamenDto);
+			return respuesta;
+		}
 	
 }

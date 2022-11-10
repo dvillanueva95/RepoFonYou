@@ -5,6 +5,7 @@ import java.util.List;
 import com.fonyou.examen.web.app.models.entity.Estudiante;
 import com.fonyou.examen.web.app.models.entity.Examen;
 import com.fonyou.examen.web.app.models.entity.PresentacionExamen;
+import com.fonyou.examen.web.app.models.entity.RespuestasPresentacion;
 import com.fonyou.examen.web.app.util.RespuestaServicio;
 import com.fonyou.examen.web.app.util.dto.EstudianteExamenDto;
 
@@ -18,6 +19,12 @@ public interface IGestionExamenService {
 	
 	// Consultar fecha presentación por estudiante y exámen
 	public RespuestaServicio consultarFechaPresentacionExamen(EstudianteExamenDto estudianteExamenDto);
+	
+	// Guardar las respuestas del examen presentado
+	public RespuestaServicio guardarRespuestasPresentacion(RespuestasPresentacion respuestasPresentacion);
+	
+	// Obtener la calificación del estudiante
+	public RespuestaServicio obtenerCalificacionPorEstudiante(EstudianteExamenDto estudianteExamenDto);
 	
 
 }

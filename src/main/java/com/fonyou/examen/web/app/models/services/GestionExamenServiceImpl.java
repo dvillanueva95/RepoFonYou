@@ -11,12 +11,16 @@ import com.fonyou.examen.web.app.models.dao.IExamenDao;
 import com.fonyou.examen.web.app.models.dao.IPreguntaDao;
 import com.fonyou.examen.web.app.models.dao.IPresentacionExamenDao;
 import com.fonyou.examen.web.app.models.dao.IRespuestasDao;
+import com.fonyou.examen.web.app.models.dao.IRespuestasPresentacionDao;
 import com.fonyou.examen.web.app.models.dao.IZonaHorariaDao;
+import com.fonyou.examen.web.app.models.dao.IresultadosExamenesDao;
 import com.fonyou.examen.web.app.models.entity.Examen;
 import com.fonyou.examen.web.app.models.entity.Pregunta;
 import com.fonyou.examen.web.app.models.entity.PresentacionExamen;
 import com.fonyou.examen.web.app.models.entity.Respuestas;
+import com.fonyou.examen.web.app.models.entity.RespuestasPresentacion;
 import com.fonyou.examen.web.app.models.entity.ZonaHoraria;
+import com.fonyou.examen.web.app.models.view.ResultadosExamenes;
 import com.fonyou.examen.web.app.util.ConstantesFonYou;
 import com.fonyou.examen.web.app.util.RespuestaServicio;
 import com.fonyou.examen.web.app.util.dto.EstudianteExamenDto;
@@ -34,6 +38,10 @@ public class GestionExamenServiceImpl implements IGestionExamenService{
 	private IPresentacionExamenDao presentacionExamenDao;
 	@Autowired
 	private IZonaHorariaDao zonaHorariaDao;
+	@Autowired
+	private IRespuestasPresentacionDao respuestasPresentacionDao;
+	@Autowired
+	private IresultadosExamenesDao resultadosExamenesDao;
 	
 	
 	@Override
@@ -178,6 +186,68 @@ public class GestionExamenServiceImpl implements IGestionExamenService{
 			// Retorna el resultado de la operación
 			return respuestaServicio;	
 		}
+	}
+
+	// Método que guarda las respuestas de la presentación del exámen
+	@Override
+	public RespuestaServicio guardarRespuestasPresentacion(RespuestasPresentacion respuestasPresentacion) {
+		
+		RespuestaServicio respuestaServicio = new RespuestaServicio();
+		
+		try {
+			// Se persiste en base de datos las respuestas del exámen
+			respuestasPresentacionDao.save(respuestasPresentacion);
+			// Se asigna código de éxito
+			respuestaServicio.setCodigoRespuesta(ConstantesFonYou.CODIGO_EXITO_OPERACION);
+			// Se asigna mensaje de éxito
+			respuestaServicio.setRespuesta(ConstantesFonYou.MENSAJE_EXITO_OPERACION);
+			
+			// Retorna el resultado de la operación
+			return respuestaServicio;			
+			
+		} catch(Exception e){
+			// Se asigna código de error
+			respuestaServicio.setCodigoRespuesta(ConstantesFonYou.CODIGO_ERROR_OPERACION);
+			// Se asigna mensaje de error
+			respuestaServicio.setRespuesta(ConstantesFonYou.MENSAJE_ERROR_OPERACION);
+			// Retorna el resultado de la operación
+			return respuestaServicio;			
+		}
+
+	}
+
+	@Override
+	public RespuestaServicio obtenerCalificacionPorEstudiante(EstudianteExamenDto estudianteExamenDto) {
+RespuestaServicio respuestaServicio = new RespuestaServicio();
+		
+		try {
+			
+			int resultadoExamen = 0;
+			
+			// Se persiste en base de datos las respuestas del exámen
+			List<ResultadosExamenes> resultadosExamenes = resultadosExamenesDao.obtenerCalifiacion(estudianteExamenDto.getIdExamen(), estudianteExamenDto.getIdEstudiante());
+			
+			for(ResultadosExamenes item: resultadosExamenes) {
+				resultadoExamen = resultadoExamen + item.getPuntaje();
+			}
+			
+			// Se asigna código de éxito
+			respuestaServicio.setCodigoRespuesta(ConstantesFonYou.CODIGO_EXITO_OPERACION);
+			// Se asigna mensaje de éxito
+			respuestaServicio.setRespuesta("La calificación es " + resultadoExamen);
+			
+			// Retorna el resultado de la operación
+			return respuestaServicio;			
+			
+		} catch(Exception e){
+			// Se asigna código de error
+			respuestaServicio.setCodigoRespuesta(ConstantesFonYou.CODIGO_ERROR_OPERACION);
+			// Se asigna mensaje de error
+			respuestaServicio.setRespuesta(ConstantesFonYou.MENSAJE_ERROR_OPERACION);
+			// Retorna el resultado de la operación
+			return respuestaServicio;			
+		}
+
 	}
 	
 

@@ -35,6 +35,14 @@ public class ResultadosExamenes implements Serializable{
 	@Column(name="puntaje")
 	private int puntaje;
 	
+	@Column(name="nombreExamen")
+	private String nombreExamen;
+	
+	@Column(name="nombreEstudiante")
+	private String nombreEstudiante;
+	
+	@Column(name="nombreCiudad")
+	private String nombreCiudad;
 	
 	public String getId() {
 		return id;
@@ -85,7 +93,28 @@ public class ResultadosExamenes implements Serializable{
 		this.puntaje = puntaje;
 	}
 	
-	
+	public String getNombreExamen() {
+		return nombreExamen;
+	}
+	public void setNombreExamen(String nombreExamen) {
+		this.nombreExamen = nombreExamen;
+	}
+	public String getNombreEstudiante() {
+		return nombreEstudiante;
+	}
+	public void setNombreEstudiante(String nombreEstudiante) {
+		this.nombreEstudiante = nombreEstudiante;
+	}
+
+	public String getNombreCiudad() {
+		return nombreCiudad;
+	}
+	public void setNombreCiudad(String nombreCiudad) {
+		this.nombreCiudad = nombreCiudad;
+	}
+
+
+
 	// Default serial ID
 	private static final long serialVersionUID = 1L;
 

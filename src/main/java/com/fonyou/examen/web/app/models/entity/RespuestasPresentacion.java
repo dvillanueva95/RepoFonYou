@@ -1,6 +1,7 @@
 package com.fonyou.examen.web.app.models.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="respuestasPresentacion")
@@ -30,6 +32,9 @@ public class RespuestasPresentacion implements Serializable{
 	@JoinColumn(name = "idRespuesta", referencedColumnName = "id")
     @ManyToOne(optional = false)
 	private Respuestas idRespuesta;
+	
+	@Transient
+	private List<Pregunta> preguntas;
 	
 	// Métodosde acceso
 	public int getId() {
@@ -57,6 +62,13 @@ public class RespuestasPresentacion implements Serializable{
 		this.idRespuesta = idRespuesta;
 	}
 
-	// Default serial ID
+	public List<Pregunta> getPreguntas() {
+		return preguntas;
+	}
+	public void setPreguntas(List<Pregunta> preguntas) {
+		this.preguntas = preguntas;
+	}
+
+		// Default serial ID
 		private static final long serialVersionUID = 1L;	
 }

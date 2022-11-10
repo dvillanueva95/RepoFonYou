@@ -193,10 +193,20 @@ public class GestionExamenServiceImpl implements IGestionExamenService{
 	public RespuestaServicio guardarRespuestasPresentacion(RespuestasPresentacion respuestasPresentacion) {
 		
 		RespuestaServicio respuestaServicio = new RespuestaServicio();
+		RespuestasPresentacion respuestasPresentacionNuevo = null;
 		
 		try {
 			// Se persiste en base de datos las respuestas del exámen
-			respuestasPresentacionDao.save(respuestasPresentacion);
+			for(Pregunta item: respuestasPresentacion.getPreguntas()) {
+				respuestasPresentacionNuevo = new RespuestasPresentacion();
+				respuestasPresentacionNuevo.setIdPresentacion(respuestasPresentacion.getIdPresentacion());
+				respuestasPresentacionNuevo.setIdPregunta(item);
+				for(Respuestas itemRespuesta: item.getRespuestas()){
+					respuestasPresentacionNuevo.setIdRespuesta(itemRespuesta);
+				}
+				respuestasPresentacionDao.save(respuestasPresentacionNuevo);	
+			}
+			
 			// Se asigna código de éxito
 			respuestaServicio.setCodigoRespuesta(ConstantesFonYou.CODIGO_EXITO_OPERACION);
 			// Se asigna mensaje de éxito
@@ -224,7 +234,7 @@ RespuestaServicio respuestaServicio = new RespuestaServicio();
 			
 			int resultadoExamen = 0;
 			
-			// Se persiste en base de datos las respuestas del exámen
+			// Lista las preguntas contestadas de un examen por estudiante
 			List<ResultadosExamenes> resultadosExamenes = resultadosExamenesDao.obtenerCalifiacion(estudianteExamenDto.getIdExamen(), estudianteExamenDto.getIdEstudiante());
 			
 			for(ResultadosExamenes item: resultadosExamenes) {
@@ -234,7 +244,7 @@ RespuestaServicio respuestaServicio = new RespuestaServicio();
 			// Se asigna código de éxito
 			respuestaServicio.setCodigoRespuesta(ConstantesFonYou.CODIGO_EXITO_OPERACION);
 			// Se asigna mensaje de éxito
-			respuestaServicio.setRespuesta("La calificación es " + resultadoExamen);
+			respuestaServicio.setRespuesta("El estudiante " + resultadosExamenes.get(0).getNombreEstudiante() + " obtuvo " + resultadoExamen  + " puntos en el examen " +  resultadosExamenes.get(0).getNombreExamen() + " presentado en la ciudad de " + resultadosExamenes.get(0).getNombreCiudad());
 			
 			// Retorna el resultado de la operación
 			return respuestaServicio;			
